@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>be caculate</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        td {
+            padding: 5px 10px;
+            text-align: center;
+        }
+        input{
+            border: none;
+        }
+        input:focus {
+            outline: none;
+        }
+        button{
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+<button type="button" id="btn">Hello Caculator!</button>
+<script>
+    document.getElementById('btn').addEventListener('click', yo);
+    function yo() {
+        var a = confirm("How are you?");
+        if (a) {
+            alert("good");
+        }else{
+                alert("bad");
+            }
+
+    }
+</script>
+<table border="1">
+    <tr>
+        <td colspan="4">
+            display:
+            <input type="text" id="display">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            result:
+            <input type="text" id="result">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" onclick="reset()">AC</td>
+        <td onclick="slice()">back</td>
+        <td onclick="add('/')">/</td>
+
+    </tr>
+    <tr>
+        <td onclick="add(7)">7</td>
+        <td onclick="add(8)">8</td>
+        <td onclick="add(9)">9</td>
+        <td onclick="add('*')">*</td>
+    </tr>
+    <tr>
+        <td onclick="add(4)">4</td>
+        <td onclick="add(5)">5</td>
+        <td onclick="add(6)">6</td>
+        <td onclick="add('-')">-</td>
+    </tr>
+    <tr>
+        <td onclick="add(1)">1</td>
+        <td onclick="add(2)">2</td>
+        <td onclick="add(3)">3</td>
+        <td onclick="add('+')">+</td>
+    </tr>
+    <tr>
+        <td colspan="2" onclick="add(0)">0</td>
+        <td onclick="add('.')">.</td>
+        <td onclick="caculate()">=</td>
+    </tr>
+    <script>
+        var numberClicked = false;
+        function add(char) {
+            if (numberClicked == false) {
+                if(isNaN(char)==true){
+                    slice()
+                    document.getElementById('display').value += char;
+                }
+                else{
+                    document.getElementById('display').value += char;
+                }
+            }
+            else{
+                document.getElementById('display').value += char;
+            }
+
+            if(isNaN(char)==true){
+                numberClicked = false;
+            }
+            else
+                numberClicked = true;
+        }
+
+
+        function caculate() {
+            try {
+                var display = document.getElementById('display');
+                var result = eval(display.value);
+                document.getElementById('result').value = result;
+            }
+            catch (e) {
+                if(SyntaxError)
+                    document.getElementById('result').value = 'error';
+            }
+
+        }
+
+        function reset() {
+            document.getElementById('display').value = '';
+            document.getElementById('result').value = '';
+        }
+
+        function slice() {
+            var display = document.getElementById('display');
+            var temp = display.value.slice(0, -1);
+            document.getElementById('display').value = temp;
+        }
+    </script>
+</table>
+</body>
+</html>
