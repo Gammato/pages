@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDoIt</title>
+    <style>
+        button {
+            background: #a12;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .list-box {
+            width: 50%;
+            margin: 20px auto;
+            padding: 10px 40px 20px;
+            background: #50bcdf;
+        }
+        .list-box h1 {
+            padding-bottom: 20px;
+            text-align: center;
+            color: #123123;
+            font-size: 100px;
+            border-bottom: 1px solid #87898f;
+        }
+        .write-box {
+            width: 100%;
+            height: 35px;
+            font-size: 0;
+        }
+        .write-box input {
+            width: 75%;
+            font-size: 20px;
+            border: none;
+            padding: 0 10px;
+            height: 100%;
+        }
+        .write-box button {
+            width: 78px;
+            font-size: 15px;
+            border: none;
+            height: 100%;
+        }
+        .list-table {
+            border-spacing: 0px;
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th,td {
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            font-size: 20px;
+        }
+        th {
+            background: #9fd6c2;
+        }
+        td {
+            color: #ffffff;
+        }
+        tbody td:first-child {
+            text-align: center;
+        }
+        .btn-area {
+            text-align: center;
+        }
+        .btn-area button {
+            height: 35px;
+            padding: 0 10px;
+            border: none;
+        }
+        .btn-area2 button{
+            margin: 0 auto;
+            width: 50%;
+            background: #ffc0cb;
+            height: 35px;
+            padding: 0 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="list-box">
+    <h1>To Do List</h1>
+    <div class="write-box">
+    <input type="text" class="text-basic">
+    <button type="button" id="btnAdd">마음먹기</button>
+    </div>
+<table class="list-table">
+    <colgroup>
+        <col width="10%">
+        <col width="90%">
+    </colgroup>
+    <thead>
+    <tr>
+        <th>선택</th>
+        <th>마음먹은것</th>
+    </tr>
+    </thead>
+    <tbody id="listBody">
+        <tr>
+            <td>
+                <input type="checkbox" class="btn-chk">
+            </td>
+            <td>
+                마음짓기
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox" class="btn-chk">
+            </td>
+            <td>
+                마음넣기
+            </td>
+        </tr>
+    </tbody>
+</table>
+    <div class="btn-area">
+        <button type="button" id="btnDelSel">선택 항목 까먹기</button>
+        <button type="button" id="btnDelLast">마지막 항목 까먹기</button>
+        <button type="button" id="btnDelAll">전부 까먹기</button>
+    </div>
+    <div class="btn-area2">
+        <center>
+            <button type="button" id="btnAchiv">해냈다!</button>
+        </center>
+    </div>
+</div>
+<script>
+    document.getElementById('btnAdd').addEventListener('click', addList);
+    document.getElementById('btnDelAll').addEventListener('click', delAll);
+    document.getElementById('btnDelLast').addEventListener('click', delLast);
+    document.getElementById('btnDelSel').addEventListener('click', delSel);
+    document.getElementById('btnAchiv').addEventListener('click', Achivement);
+
+    function addList() {
+        var contents = document.querySelector('.text-basic');
+        if(!contents.value){
+            alert('마음먹을게 없어요.');
+            contents.focus();
+            return false;
+        }
+
+        var tr = document.createElement('tr');
+        var input = document.createElement('input');
+        input.setAttribute('type', 'checkbox');
+        input.setAttribute('class', 'btn-chk');
+
+        var td01 = document.createElement('td');
+        td01.appendChild(input);
+        tr.appendChild(td01);
+
+        var td02 = document.createElement('td');
+        td02.innerHTML = contents.value;
+        tr.appendChild(td02);
+        document.getElementById('listBody').appendChild(tr);
+
+        contents.value = '';
+        contents.focus();
+    }
+    
+    function delAll() {
+        var list = document.getElementById('listBody');
+        var listalert = document.querySelectorAll('#listBody > tr');
+        var listChild = list.children;
+        if(listalert.length <= 0){
+            alert('마음먹은게 없어요.');
+            return false;
+        }
+        else {
+            for (var i = 0; i < listChild.length; i++) {
+                list.removeChild(listChild[i]);
+                i--;
+            }
+        }
+    }
+
+    function delLast() {
+        var body = document.getElementById('listBody');
+        var list = document.querySelectorAll('#listBody > tr');
+        if(list.length <= 0){
+            alert('마음먹은게 없어요.');
+            return false;
+        }
+        else {
+            var last = list.length - 1;
+            body.removeChild(list[last]);
+        }
+    }
+    
+    function delSel() {
+        var body = document.getElementById('listBody');
+        var check = document.querySelectorAll('#listBody .btn-chk');
+        var chklist = 0;
+
+        for (var i in check) {
+            if (check[i].checked == true){
+                body.removeChild(check[i].parentNode.parentNode);
+                chklist++;
+            }
+        }
+        if (chklist == 0) {
+            alert('까먹을게 없어요.');
+            return false;
+        }
+    }
+
+    function Achivement() {
+        var node;
+        var check = document.querySelectorAll('#listBody .btn-chk');;
+        var chklist = 0;
+        var colorarr = ['green'];
+
+        for (var i in check) {
+            if (check[i].checked == true){
+                node = check[i].parentNode.parentNode;
+                node.style.backgroundColor=colorarr['0']
+                check[i].checked = false;
+                chklist++;
+            }
+        }
+        if (chklist == 0) {
+            alert('결국 해내고 만 것을 선택하세요.');
+            return false;
+        }
+    }
+</script>
+</body>
+</html>
